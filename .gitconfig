@@ -1,0 +1,71 @@
+[user]
+	name = Siddharth
+	email = siddharth.muscat@gmail.com
+	username = SiddharthShyniben
+
+[core]
+	editor = vim
+
+[init]
+	defaultBranch = main
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+	showbranch = auto
+	ui = true
+
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+
+[alias]
+	unstage = restore --staged
+	uncommit = reset --soft HEAD~1
+	graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+	graphfull = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%n%b'
+	acm = ! git add . && git commit -m
+
+	a = add
+	b = branch
+	c = commit
+	d = diff
+	f = fetch
+	g = grep
+	l = log
+	m = merge
+	o = checkout
+	p = pull
+	r = remote
+	s = status
+	w = whatchanged
+
+	aa = add --all
+	ap = add --patch
+	au = add --update
+
+	dc = diff --cached
+	ds = diff --staged
+	cm = ! git commit -m
+	pl = pull
+	ph = push
+
+[commit]
+	verbose = true
+
+[pull]
+	rebase = false
