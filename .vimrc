@@ -26,18 +26,6 @@ filetype indent on
 syntax on
 set background=dark
 
-" For Neovim > 0.1.5 and Vim > patch 7.4.1799 - https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162
-" Based on Vim patch 7.4.1770 (`guicolors` option) - https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd
-" https://github.com/neovim/neovim/wiki/Following-HEAD#20160511
-if (has('termguicolors'))
-	set termguicolors
-endif
-
-" Fix italics in iterm
-if !has('nvim')
-	let &t_ZH="\e[3m"
-	let &t_ZR="\e[23m"
-endif
 
 " Relatively add numbers to each line on the left-hand side.
 set number
@@ -250,7 +238,7 @@ augroup END
 " Format on load, write
 augroup autoindent
 	autocmd!
-	autocmd BufWritePre,BufRead * :normal gg=G''
+	autocmd BufWritePre * :normal gg=G''
 augroup END
 
 " More snippets
@@ -302,6 +290,24 @@ nnoremap <Leader>x *``cgn
 
 " Save
 nnoremap ;; :w<CR>
+
+nnoremap <leader>; mqA;<esc>`q
+
+" tmux like split mapping
+nnoremap <C-w>\| :vsplit<cr>
+nnoremap <C-w>-  :split<cr>
+" Hey, everyone makes this mistake
+nnoremap <C-w>_ :split<cr>
+
+" No arrow keys!
+nnoremap <C-w><Up> <nop>
+nnoremap <C-w><Down> <nop>
+nnoremap <C-w><Left> <nop>
+nnoremap <C-w><Right> <nop>
+
+" Terminal open
+nnoremap <leader>t :term<cr>
+nnoremap <leader>T :vert term<cr>
 " }}}
 
 " ===>>==================<<=== "
@@ -336,7 +342,7 @@ call plug#end()
 autocmd VimEnter * NERDTree | wincmd p
 
 " Material theme config
-let g:material_terminal_italics = 1
+" let g:material_terminal_italics = 1
 let g:material_theme_style='darker'
 colors material
 colorscheme material
@@ -350,11 +356,23 @@ let g:lightline = { 'colorscheme': 'material_vim' }
 " ===>>===    MISC    ===<<=== "
 " ===>>==================<<=== {{{
 
+" Backup
 if version >= 703
 	set undodir=~/.vim/backup
 	set undofile
 	set undoreload=10000
 endif
+
+" For Neovim > 0.1.5 and Vim > patch 7.4.1799 - https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162
+" Based on Vim patch 7.4.1770 (`guicolors` option) - https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd
+" https://github.com/neovim/neovim/wiki/Following-HEAD#20160511
+if (has('termguicolors'))
+	set termguicolors
+endif
+
+" Fix italics in iterm
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
 
 " Highlight trailing spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
