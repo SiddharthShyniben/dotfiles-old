@@ -1,4 +1,3 @@
-" ===>>==================<<=== "
 " ===>>===   BASICS   ===<<=== "
 " ===>>==================<<=== " {{{
 " Disable vi compatibility
@@ -197,6 +196,9 @@ noremap - ddkkp
 nnoremap H 0
 nnoremap L $
 
+" Backspace in normal
+nnoremap <BS> hx
+
 " That escape too far away
 inoremap jk <esc>
 " Sometimes I hit the wrong keys
@@ -219,13 +221,16 @@ nnoremap du ddkpp
 nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <Leader>so :source $MYVIMRC<cr>
 
+" Toggle NERDTree
+nnoremap <leader>N :NERDTree<cr>
+
 " Why modify?
 nnoremap ; :
 
 " Pesky ctrl + w
 inoremap <C-w> <esc><C-w>
 " Mapping to toggle relative number
-noremap no :set relativenumber!<cr>
+inoremap <leader>no :set relativenumber!<cr>
 
 " Comment out
 augroup comment
@@ -238,7 +243,7 @@ augroup END
 " Format on load, write
 augroup autoindent
 	autocmd!
-	autocmd BufWritePre * :normal gg=G''
+	autocmd BufWritePre * :normal ,f
 augroup END
 
 " More snippets
@@ -268,7 +273,7 @@ onoremap il' :<c-u>normal! F'vi'<cr>
 nnoremap <leader><space> :nohlsearch<cr>
 
 " Format
-nnoremap ,f gg=G''
+nnoremap <leader>f mfgg=G''`f
 
 " End of line – similar to 0 for start of line
 nnoremap 9 $
@@ -285,19 +290,21 @@ augroup filetype_vim
 	autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
+augroup css_change_selector
+	autocmd!
+	autocmd FileType css :onoremap is :<c-u>execute "normal! ?^.* {$\r:nohlsearch\rvwh$"<cr>
+augroup END
 " Replace current wordish
 nnoremap <Leader>x *``cgn
 
 " Save
 nnoremap ;; :w<CR>
 
+" Insert ; at end
 nnoremap <leader>; mqA;<esc>`q
+" Insert , at end
+nnoremap <leader>, mqA,<esc>`q
 
-" tmux like split mapping
-nnoremap <C-w>\| :vsplit<cr>
-nnoremap <C-w>-  :split<cr>
-" Hey, everyone makes this mistake
-nnoremap <C-w>_ :split<cr>
 
 " No arrow keys!
 nnoremap <C-w><Up> <nop>
@@ -308,6 +315,27 @@ nnoremap <C-w><Right> <nop>
 " Terminal open
 nnoremap <leader>t :term<cr>
 nnoremap <leader>T :vert term<cr>
+
+" Splits
+" Idea: <C-w> to split, <C-s> to resize
+"
+
+" tmux like split mapping
+nnoremap <C-w>\| :vsplit<cr>
+nnoremap <C-w>_ :split<cr>
+
+" Resize splits
+nnoremap <C-s>+ <C-w>+
+nnoremap <C-s>- <C-w>-
+" < to resize > and > to resize <? no thank you
+nnoremap <C-s>> <C-w><
+nnoremap <C-s>< <C-w>>
+nnoremap <C-s>= <C-w>=
+" Practically hide the current split
+nnoremap <C-s>h <C-w>h <C-w>|
+nnoremap <C-s>j <C-w>j <C-w>_
+nnoremap <C-s>k <C-w>k <C-w>_
+nnoremap <C-s>l <C-w>l <C-w>|
 " }}}
 
 " ===>>==================<<=== "
@@ -329,6 +357,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
 Plug 'leafgarland/typescript-vim'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'Chiel92/vim-autoformat'
 
 call plug#end()
 " }}}
