@@ -150,6 +150,7 @@ alias gcm="g cm"
 alias gacm="g acm"
 alias gc="g c"
 alias gd="g d"
+alias gp="g p"
 
 # Cleanup
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
