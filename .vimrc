@@ -253,6 +253,9 @@ augroup comment
 	autocmd FileType javascript :iabbrev <buffer> fn function<space><space>()<space>{}<esc>5h
 augroup END
 
+" Format JavaScript bracket style, ie. { stuff } => {stuff}
+nnoremap <leader>fmt :%s/{ \(.*\) }/{\1}/g<cr>
+
 " Insert curly braces
 " if (|) => if () {|}
 inoremap n{ <right><space>{}<esc>i
@@ -302,11 +305,7 @@ nnoremap <Leader>x *``cgn
 " Save
 nnoremap ;; :w<CR>
 
-" Insert ; at end
-nnoremap <leader>; mqA;<esc>`q
-" Insert , at end
-nnoremap <leader>, mqA,<esc>`q
-
+nnoremap <expr> <leader><leader> "mqA" . (nr2char(getchar())) . "<esc>`q"
 
 " No arrow keys!
 nnoremap <C-w><Up> <nop>
@@ -338,6 +337,9 @@ nnoremap <C-s>h <C-w>h <C-w>|
 nnoremap <C-s>j <C-w>j <C-w>_
 nnoremap <C-s>k <C-w>k <C-w>_
 nnoremap <C-s>l <C-w>l <C-w>|
+
+" Typos
+iabbrev viod void
 " }}}
 
 " ===>>==================<<=== "
