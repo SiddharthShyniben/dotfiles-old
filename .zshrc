@@ -128,7 +128,6 @@ space() {
 alias p="~/Sites/Projects"
 alias home="~"
 alias s="~/Sites"
-alias punishme='node ~/Sites/Sandbox/punishment/bin/index.js'
 
 # dotfile management
 alias config='/usr/bin/git --git-dir=/Users/apple/.cfg/ --work-tree=/Users/apple'
@@ -150,7 +149,8 @@ alias gcm="g cm"
 alias gacm="g acm"
 alias gc="g c"
 alias gd="g d"
-alias gp="g p"
+alias gph="g ph"
+alias gpl="g pl"
 
 # Cleanup
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
