@@ -277,6 +277,8 @@ nnoremap <leader>f mfgg=G''`f
 
 " End of line – similar to 0 for start of line
 nnoremap 9 $
+" Operator complete whatever binding
+onoremap 9 v$
 
 augroup header
 	" Change in header
