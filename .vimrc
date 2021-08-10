@@ -308,6 +308,12 @@ augroup css_change_selector
 	autocmd!
 	autocmd FileType css :onoremap is :<c-u>execute "normal! ?^.* {$\r:nohlsearch\rvwh$"<cr>
 augroup END
+
+" Leave a mark when leaving buffer"
+augroup leave_buffer
+	autocmd BufLeave mP
+augroup END
+
 " Replace current wordish
 nnoremap <Leader>x *``cgn
 
@@ -325,6 +331,9 @@ nnoremap <C-w><Right> <nop>
 " Terminal open
 nnoremap <leader>t :term<cr>
 nnoremap <leader>T :vert term<cr>
+
+" I always forget `this`
+nnoremap <leader>h mtbithis.<esc>`t
 
 " Splits
 " Idea: <C-w> to split, <C-s> to resize
