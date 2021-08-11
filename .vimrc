@@ -256,11 +256,10 @@ augroup END
 " Insert double chars
 inoremap ' ''<Left>
 inoremap " ""<Left>
-inoremap ` ``<Left>
 inoremap { {}<Left>
 inoremap [ []<Left>
 inoremap ( ()<Left>
-inoremap < <><Left>
+inoremap ` ``<Left>
 
 " Format JavaScript bracket style, ie. { stuff } => {stuff}
 nnoremap <leader>fmt :%s/{ \(.*\) }/{\1}/g<cr>
