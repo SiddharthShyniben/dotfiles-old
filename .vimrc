@@ -320,7 +320,11 @@ nnoremap <Leader>x *``cgn
 " Save
 nnoremap ;; :w<CR>
 
+" Append to end 
 nnoremap <expr> <leader><leader> "mqA" . (nr2char(getchar())) . "<esc>`q"
+
+" Append to start"
+nnoremap <expr> <leader><localleader> "mq^" . (nr2char(getchar())) . "<esc>`q"
 
 " No arrow keys!
 nnoremap <C-w><Up> <nop>
