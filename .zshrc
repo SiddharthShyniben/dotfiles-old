@@ -182,3 +182,7 @@ alias sl="curl -s -L http://bit.ly/10hA8iC | bash"
 alias rickroll="curl -s -L http://bit.ly/10hA8iC | bash"
 # please!
 alias please="sudo"
+
+# Deno
+export DENO_INSTALL="/Users/apple/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
