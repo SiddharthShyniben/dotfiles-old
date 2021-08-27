@@ -186,3 +186,7 @@ alias please="sudo"
 # Deno
 export DENO_INSTALL="/Users/apple/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
+
+fpath=(~/.zsh $fpath)
+autoload -Uz compinit
+compinit -u
