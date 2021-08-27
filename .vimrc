@@ -240,12 +240,6 @@ augroup comment
 	autocmd FileType vim            nnoremap gcc I"<space><esc>A<esc>
 augroup END
 
-" Format on load, write
-augroup autoindent
-	autocmd!
-	autocmd BufWritePre * :normal ,f
-augroup END
-
 " More snippets
 augroup comment
 	autocmd!
@@ -256,10 +250,11 @@ augroup END
 " Insert double chars
 inoremap ' ''<Left>
 inoremap " ""<Left>
+inoremap ` ``<Left>
 inoremap { {}<Left>
 inoremap [ []<Left>
 inoremap ( ()<Left>
-inoremap ` ``<Left>
+inoremap < <><Left>
 
 " Format JavaScript bracket style, ie. { stuff } => {stuff}
 nnoremap <leader>fmt :%s/{ \(.*\) }/{\1}/g<cr>
@@ -310,7 +305,13 @@ augroup END
 
 " Leave a mark when leaving buffer"
 augroup leave_buffer
+	autocmd!
 	autocmd BufLeave mP
+augroup END
+
+augroup deno
+	autocmd!
+	autocmd FileType typescript :CocCommand deno.initializeWorkspacett
 augroup END
 
 " Replace current wordish
@@ -318,6 +319,14 @@ nnoremap <Leader>x *``cgn
 
 " Save
 nnoremap ;; :w<CR>
+
+" Run a macro on all selected lines
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+	echo "@".getcmdline()
+	execute ":'<,'>normal @".nr2char(getchar())
+endfunction
 
 " Append to end 
 nnoremap <expr> <leader><leader> "mqA" . (nr2char(getchar())) . "<esc>`q"
@@ -431,4 +440,9 @@ let &t_ZR="\e[23m"
 " Highlight trailing spaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 
+" Remove trailing spaces
+augroup trailing
+	autocmd!
+	autocmd BufWritePre * :%s/\s\+$//e
+augroup END
 " }}}
