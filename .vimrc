@@ -328,7 +328,7 @@ function! ExecuteMacroOverVisualRange()
 	execute ":'<,'>normal @".nr2char(getchar())
 endfunction
 
-" Append to end 
+" Append to end
 nnoremap <expr> <leader><leader> "mqA" . (nr2char(getchar())) . "<esc>`q"
 
 " Append to start"
@@ -392,6 +392,8 @@ Plug 'ap/vim-css-color'
 Plug 'leafgarland/typescript-vim'
 Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'Chiel92/vim-autoformat'
+Plug 'tpope/vim-fugitive'
+Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 
 call plug#end()
 " }}}
