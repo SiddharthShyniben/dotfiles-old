@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# MacVim path
+export PATH=/Applications/MacVim.app/Contents/bin:$PATH
+
 # Set $TERM
 export TERM=xterm-256color
 
@@ -180,8 +183,12 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 alias suod="curl -s -L http://bit.ly/10hA8iC | bash"
 alias sl="curl -s -L http://bit.ly/10hA8iC | bash"
 alias rickroll="curl -s -L http://bit.ly/10hA8iC | bash"
+
 # please!
 alias please="sudo"
+
+# quitting in vim
+alias :q='exit'
 
 # Deno
 export DENO_INSTALL="/Users/apple/.deno"

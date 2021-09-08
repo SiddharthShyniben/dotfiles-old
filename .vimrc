@@ -199,6 +199,9 @@ nnoremap L $
 " Backspace in normal
 nnoremap <BS> hx
 
+" Uppercase current char
+nnoremap U gUl
+
 " That escape too far away
 inoremap jk <esc>
 " Sometimes I hit the wrong keys
@@ -214,6 +217,9 @@ nnoremap <Down> <nop>
 nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 
+" Go to start, ignore whitespace
+nnoremap 00 0w
+
 " Duplicate line
 nnoremap du ddkpp
 
@@ -227,10 +233,13 @@ nnoremap <leader>N :NERDTree<cr>
 " Why modify?
 nnoremap ; :
 
+" Comma space
+inoremap , ,<space>
+
 " Pesky ctrl + w
 inoremap <C-w> <esc><C-w>
 " Mapping to toggle relative number
-inoremap <leader>no :set relativenumber!<cr>
+nnoremap <leader>no :set relativenumber!<cr>
 
 " Comment out
 augroup comment
@@ -311,7 +320,7 @@ augroup END
 
 augroup deno
 	autocmd!
-	autocmd FileType typescript :CocCommand deno.initializeWorkspacett
+	autocmd FileType typescript :CocCommand deno.initializeWorkspace j<cr>
 augroup END
 
 " Replace current wordish
@@ -394,6 +403,7 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'Chiel92/vim-autoformat'
 Plug 'tpope/vim-fugitive'
 Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
+Plug 'cespare/vim-toml'
 
 call plug#end()
 " }}}
