@@ -1,0 +1,1 @@
+/Users/apple/xterm-256color.terminfo.txt
