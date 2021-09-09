@@ -1,1 +1,1 @@
-source ~/.vimrc
+/Users/apple/.gvimrc
