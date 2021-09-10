@@ -1,3 +1,4 @@
+" ===>>==================<<=== "
 " ===>>===   BASICS   ===<<=== "
 " ===>>==================<<=== " {{{
 set nocompatible
@@ -6,6 +7,7 @@ set encoding=utf-8
 
 set spell
 set noshowmode
+set breakindent
 
 if !has('nvim')
 	set autoshelldir
@@ -29,6 +31,7 @@ set cindent
 set shiftwidth=4
 set tabstop=4
 set noexpandtab
+set smarttab
 
 set scrolloff=10
 set nowrap
@@ -40,6 +43,10 @@ set showbreak=↪\
 set list
 set listchars=eol:↲,nbsp:␣,trail:•,extends:>,precedes:<
 set listchars+=tab:\ \ \│
+
+set updatetime=300
+set shortmess=as
+set signcolumn=number
 
 set smartcase
 set showcmd
@@ -105,14 +112,6 @@ inoremap , ,<space>
 inoremap <C-w> <esc><C-w>
 
 nnoremap <leader>no :set relativenumber!<cr>
-
-" inoremap ' ''<Left>
-" inoremap " ""<Left>
-" inoremap ` ``<Left>
-" inoremap { {}<Left>
-" inoremap [ []<Left>
-" inoremap ( ()<Left>
-" inoremap < <><Left>
 
 nnoremap <leader>fmt :%s/{ \(.*\) }/{\1}/g<cr>
 
@@ -189,6 +188,8 @@ nnoremap <leader>T :vert term<cr>
 
 nnoremap <leader>h mtbithis.<esc>`t
 
+nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
+
 nnoremap <C-w>\| :vsplit<cr>
 nnoremap <C-w>_ :split<cr>
 
@@ -209,23 +210,29 @@ Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'itchyny/lightline.vim'
 
 Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-surround'
+Plug 'turbio/bracey.vim'
 Plug 'preservim/nerdcommenter'
+Plug 'Chiel92/vim-autoformat'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'wellle/context.vim'
 
+Plug 'tpope/vim-surround'
+Plug 'dkarter/bullets.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'alvan/vim-closetag'
+
+Plug 'jelera/vim-javascript-syntax'
+Plug 'leafgarland/typescript-vim'
 Plug 'gabrielelana/vim-markdown'
 Plug 'hail2u/vim-css3-syntax'
-Plug 'jelera/vim-javascript-syntax'
 Plug 'ap/vim-css-color'
-Plug 'leafgarland/typescript-vim'
 Plug 'cespare/vim-toml'
-
-Plug 'turbio/bracey.vim'
-Plug 'Chiel92/vim-autoformat'
-Plug 'tpope/vim-fugitive'
 
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'preservim/vim-pencil'
 
 Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 Plug 'mhinz/vim-startify'
@@ -255,7 +262,6 @@ colors material
 colorscheme material
 
 let g:lightline = { 'colorscheme': 'material_vim' }
-let g:airline_powerline_fonts = 1
 
 let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
@@ -264,13 +270,14 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
 
+let g:ale_linters = {'javascript': ['eslint']}
+let g:ale_deno_unstable = 1
 "}}}
 
 " ===>>==================<<=== "
 " ===>>===    MISC    ===<<=== "
 " ===>>==================<<=== {{{
 
-" Backup
 if version >= 703
 	set undodir=~/.vim/backup
 	set undofile
@@ -280,4 +287,6 @@ endif
 if (has('termguicolors'))
 	set termguicolors
 endif
+
+match Error /\s\+$/
 " }}}
