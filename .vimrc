@@ -194,9 +194,9 @@ function! CompileAndRun()
 	execute "!" . compiler . " " . expand('%:p')
 endfunction
 
-nnoremap <leader>t :call terminal()<cr>
+nnoremap <leader>t :call Terminal()<cr>
 
-function! terminal()
+function! Terminal()
 	let split = SmartSplitText()
 	if split ==? 'vsplit'
 		vert term
