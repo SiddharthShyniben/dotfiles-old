@@ -9,6 +9,11 @@ set spell
 set noshowmode
 set breakindent
 set textwidth=80
+set signcolumn=yes
+set virtualedit=block
+
+set splitbelow
+set splitright
 
 if !has('nvim')
 	set autoshelldir
@@ -20,6 +25,7 @@ filetype indent on
 
 syntax on
 syntax enable
+syntax spell notoplevel
 set background=dark
 
 set number
@@ -47,7 +53,6 @@ set listchars+=tab:\ \ │
 
 set updatetime=300
 set shortmess=as
-set signcolumn=number
 
 set smartcase
 set showcmd
@@ -62,8 +67,8 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
 set colorcolumn=80
 
-set cursorline
-set cursorcolumn
+set nocursorline
+set nocursorcolumn
 
 set mouse=a
 " }}}
@@ -75,16 +80,10 @@ set mouse=a
 let mapleader = ","
 let maplocalleader = "\\"
 
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
-
-nnoremap U gUl
-nnoremap L gul
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 
 inoremap jk <esc>
 
@@ -94,12 +93,30 @@ nnoremap <Down> <nop>
 nnoremap <Left> <nop>
 nnoremap <Right> <nop>
 
-nnoremap <S-j> yyp
+nnoremap <S-j> "iyyp
 
 nnoremap <Leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <Leader>so :source $MYVIMRC<cr>
 
-nnoremap <leader>N :NERDTree<cr>
+function! SmartSplitText()
+	let width = winwidth('%')
+	let height = winheight('%')
+
+	echo width height
+
+	if (width > height * 4)
+		return 'vsplit'
+	else
+		return 'split'
+	endif
+endfunction
+
+nnoremap <leader>n :NERDTree<cr>
+
+augroup NerdTree
+	autocmd!
+	autocmd filetype nerdtree setlocal nocursorline nocursorcolumn colorcolumn= noshowmode noruler laststatus=0 noshowcmd cmdheight=1 
+augroup END
 
 nnoremap ; :
 
@@ -108,19 +125,6 @@ inoremap , ,<space>
 noremap ' `
 
 inoremap <C-w> <esc><C-w>
-
-" Mini formatter
-function! Format()
-	normal! %s/{ \(.*\) }/{\1}/g
-	normal! %s/{\(.*\) }/{\1}/g
-	normal! %s/{ \(.*\)}/{\1}/g
-	normal! mfgg=G''`f
-endfunction
-
-nnoremap <leader>fmt :call Format()<cr>
-
-" if (|) => if () {|}
-inoremap n{ <right><space>{}<esc>i
 
 onoremap in( :<c-u>normal! f(vi(<cr>
 onoremap in{ :<c-u>normal! f{vi{<cr>
@@ -161,11 +165,6 @@ augroup css_change_selector
 	autocmd FileType css :onoremap is :<c-u>execute "normal! ?^.* {$\r:nohlsearch\rvwh$"<cr>
 augroup END
 
-augroup spell
-	autocmd!
-	autocmd FileType css,javascript,typescript :set nospell
-augroup END
-
 nnoremap <Leader>c *``cgn
 nnoremap <Leader>C #``cgn
 
@@ -175,9 +174,6 @@ function! ExecuteMacroOverVisualRange()
 	echo "@".getcmdline()
 	execute ":'<,'>normal @".nr2char(getchar())
 endfunction
-
-nnoremap <expr> <leader><leader> "mqA" . (nr2char(getchar())) . "<esc>`q"
-nnoremap <expr> <localleader><localleader> "mq^" . (nr2char(getchar())) . "<esc>`q"
 
 nnoremap <leader>r :call CompileAndRun()<cr>
 
@@ -198,28 +194,26 @@ function! CompileAndRun()
 	execute "!" . compiler . " " . expand('%:p')
 endfunction
 
-nnoremap <leader>t :term<cr>
-nnoremap <leader>T :vert term<cr>
+nnoremap <leader>t :call terminal()<cr>
+
+function! terminal()
+	let split = SmartSplitText()
+	if split ==? 'vsplit'
+		vert term
+	else
+		term
+	endif
+endfunction
 
 nnoremap <leader>h mtbithis.<esc>`t
 
 nnoremap <leader>g :silent execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 
-nnoremap <C-w>\| :vsplit<cr>
-nnoremap <C-w>_ :split<cr>
-nnoremap <C-w>o :only<cr>
-
-" Top split (to see variables, etc.)
-nnoremap <C-w>t :5vsplit %<cr>:normal! gg<cr>
-nnoremap <C-w>T :5split %<cr>:normal! gg<cr>
-
-iabbrev viod void
-
-nnoremap tn :tabnew<cr>
-nnoremap tl :tabnext<cr>
-nnoremap th :tabprevious<cr>
-nnoremap tc :tabclose<cr>
-nnoremap to :tabonly<cr>
+nnoremap <leader>tn :tabnew<cr>
+nnoremap <leader>tl :tabnext<cr>
+nnoremap <leader>th :tabprevious<cr>
+nnoremap <leader>tc :tabclose<cr>
+nnoremap <leader>to :tabonly<cr>
 " }}}
 
 " ===>>==================<<=== "
@@ -228,24 +222,21 @@ nnoremap to :tabonly<cr>
 " ===>>==================<<=== {{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 Plug 'preservim/nerdtree'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
+Plug 'SiddharthShyniben/pitch'
 Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 
 Plug 'mattn/emmet-vim'
 Plug 'preservim/nerdcommenter'
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'wellle/context.vim'
 
 Plug 'tpope/vim-surround'
-Plug 'dkarter/bullets.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
+Plug 'kamykn/spelunker.vim'
+Plug 'kevinoid/vim-jsonc'
 
 Plug 'jelera/vim-javascript-syntax'
 Plug 'leafgarland/typescript-vim'
@@ -256,7 +247,6 @@ Plug 'cespare/vim-toml'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'tpope/vim-markdown'
-Plug 'lakshayg/vim-spell', { 'branch': 'main', 'do': { -> spell#BuildAllSyntaxFiles() } }
 
 Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 
@@ -267,14 +257,8 @@ call plug#end()
 
 " ===>>==================<<=== "
 " ===>>===   PLUGIN   ===<<=== "
-" ===>>===   CONFIG   ===<<=== "
+" ===>>===CONFIGURATION==<<=== "
 " ===>>==================<<=== {{{
-autocmd VimEnter * RainbowParentheses
-autocmd VimEnter,TabNew * NERDTree | wincmd p
-
-let g:material_terminal_italics = 1
-let g:material_theme_style='darker'
-
 let g:markdown_fenced_languages = ['html', 'css', 'js=javascript', 'javascript', 'vim', 'ts=typescript', 'yaml', 'toml']
 
 let t_Co=256
@@ -283,10 +267,25 @@ if exists("g:loaded_webdevicons")
 	call webdevicons#refresh()
 endif
 
-colors material
-colorscheme material
+colors pitch
+colorscheme pitch
 
-let g:lightline = {'colorscheme': 'material_vim'}
+set foldtext=gitgutter#fold#foldtext()
+
+let g:lightline = {
+			\ 	'colorscheme': 'pitch',
+			\ 	'active': {
+				\ 		'left': [['mode',  'relativepath', 'paste'], ['fugitive']]
+				\ 	},
+				\ 	'tabline': {
+					\ 		'left': [['buffers']],
+					\ 		'right': [['close']]
+					\ 	},
+					\ 	'component_expand': {'buffers': 'lightline#bufferline#buffers'},
+					\ 	'component_type': {'buffers': 'tabsel'},
+					\ }
+
+autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 let g:NERDCreateDefaultMappings = 1
 let g:NERDSpaceDelims = 1
@@ -294,16 +293,16 @@ let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
-
-let g:ale_linters = {'javascript': ['xo'], 'typescript': ['deno', 'tsserver']}
-let g:ale_deno_unstable = 1
-let g:ale_linters_explicit = 1
-let g:ale_completion_enabled = 1
 "}}}
 
 " ===>>==================<<=== "
 " ===>>===    MISC    ===<<=== "
 " ===>>==================<<=== {{{
+
+function! SynGroup()
+	let l:s = synID(line('.'), col('.'), 1)
+	echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfunction
 
 if version >= 703
 	set undodir=~/.vim/backup

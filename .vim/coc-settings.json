@@ -1,3 +1,7 @@
 {
-	"diagnostic.displayByAle": true
+	// Comment
+	"diagnostic.displayByAle": true,
+	"deno.unstable": true,
+	"json.enable": true,
+	"tsserver.enable": true
 }
