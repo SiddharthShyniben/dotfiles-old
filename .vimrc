@@ -273,17 +273,26 @@ colorscheme pitch
 set foldtext=gitgutter#fold#foldtext()
 
 let g:lightline = {
-			\ 	'colorscheme': 'pitch',
-			\ 	'active': {
-				\ 		'left': [['mode',  'relativepath', 'paste'], ['fugitive']]
-				\ 	},
-				\ 	'tabline': {
-					\ 		'left': [['buffers']],
-					\ 		'right': [['close']]
-					\ 	},
-					\ 	'component_expand': {'buffers': 'lightline#bufferline#buffers'},
-					\ 	'component_type': {'buffers': 'tabsel'},
-					\ }
+\ 	'colorscheme': 'pitch',
+\ 	'active': {
+\ 		'left': [['mode',  'relativepath', 'paste'], ['fugitive']]
+\ 	},
+\ 	'tabline': {
+\ 		'left': [['buffers']],
+\ 		'right': [['close']]
+\ 	},
+\ 	'component_expand': {'buffers': 'lightline#bufferline#buffers'},
+\ 	'component_type': {'buffers': 'tabsel'},
+\ }
+
+function! LightlineGitGutter()
+	if !get(g:, 'gitgutter_enabled', 0) || empty(FugitiveHead())
+		return ''
+	endif
+	let [ l:added, l:modified, l:removed ] = GitGutterGetHunkSummary()
+	return printf('+%d ~%d -%d', l:added, l:modified, l:removed)
+endfunction
+
 
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
