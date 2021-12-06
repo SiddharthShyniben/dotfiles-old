@@ -46,11 +46,6 @@ set nowrap
 set incsearch
 set ignorecase
 
-set showbreak=↪\
-set list
-set listchars=eol:↲,nbsp:␣,trail:•,extends:>,precedes:<
-set listchars+=tab:\ \ │
-
 set updatetime=300
 set shortmess=as
 
@@ -76,9 +71,11 @@ set mouse=a
 " ===>>==================<<=== "
 " ===>>===  MAPPINGS  ===<<=== "
 " ===>>==================<<=== {{{
-
 let mapleader = ","
 let maplocalleader = "\\"
+
+" Path autocompletion
+nnoremap <Leader>af i<C-x><c-f>
 
 nnoremap <C-j> :m .+1<CR>==
 nnoremap <C-k> :m .-2<CR>==
@@ -214,6 +211,18 @@ nnoremap <leader>tl :tabnext<cr>
 nnoremap <leader>th :tabprevious<cr>
 nnoremap <leader>tc :tabclose<cr>
 nnoremap <leader>to :tabonly<cr>
+
+autocmd TermOpen * setlocal nospell nonumber norelativenumber noshowmode noruler laststatus=0 noshowcmd cmdheight=1 
+
+tnoremap <C-w> <C-\><C-n><C-w>
+
+function! Zen()
+	set nonumber
+	set norelativenumber
+	set signcolumn=no
+	Goyo
+	Limelight
+endfunction
 " }}}
 
 " ===>>==================<<=== "
@@ -223,7 +232,8 @@ nnoremap <leader>to :tabonly<cr>
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree'
-Plug 'SiddharthShyniben/pitch'
+" Plug 'SiddharthShyniben/pitch'
+Plug 'olimorris/onedarkpro.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 
@@ -231,6 +241,8 @@ Plug 'mattn/emmet-vim'
 Plug 'preservim/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'wellle/context.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
@@ -247,10 +259,24 @@ Plug 'cespare/vim-toml'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'tpope/vim-markdown'
+Plug 'metakirby5/codi.vim', { 'on': 'Codi' }
 
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'glepnir/dashboard-nvim'
+Plug 'akinsho/toggleterm.nvim'
+
+Plug 'dense-analysis/ale'
+Plug 'github/copilot.vim'
 Plug 'PsychoLlama/vim-gol', { 'on': 'GOL' }
 
-Plug 'ryanoasis/vim-devicons'
+Plug 'vim-test/vim-test'
+Plug 'rcarriga/vim-ultest'
+
+Plug 'folke/which-key.nvim'
+Plug 'diepm/vim-rest-console'
+
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
 
 call plug#end()
 " }}}
@@ -267,13 +293,12 @@ if exists("g:loaded_webdevicons")
 	call webdevicons#refresh()
 endif
 
-colors pitch
-colorscheme pitch
+colorscheme onedarkpro
 
 set foldtext=gitgutter#fold#foldtext()
 
 let g:lightline = {
-\ 	'colorscheme': 'pitch',
+\ 	'colorscheme': 'one',
 \ 	'active': {
 \ 		'left': [['mode',  'relativepath', 'paste'], ['fugitive']]
 \ 	},
@@ -293,7 +318,6 @@ function! LightlineGitGutter()
 	return printf('+%d ~%d -%d', l:added, l:modified, l:removed)
 endfunction
 
-
 autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 
 let g:NERDCreateDefaultMappings = 1
@@ -302,6 +326,28 @@ let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1
+
+let g:copilot_filetypes = {
+\	'*': v:true
+\ }
+
+let g:dashboard_default_executive ='fzf'
+
+let g:dashboard_preview_command = 'cat'
+let g:dashboard_preview_pipeline = 'lolcatjs'
+let g:dashboard_preview_file = '~/.config/nvim/logo.cat'
+let g:dashboard_preview_file_height = 12
+let g:dashboard_preview_file_width = 80
+let g:indentLine_fileTypeExclude = ['dashboard']
+
+let g:ale_disable_lsp = 1
+let g:ale_set_quickfix = 1
+
+lua << EOF
+  require("trouble").setup {
+	  mode = "quickfix"
+  }
+EOF
 "}}}
 
 " ===>>==================<<=== "
@@ -312,12 +358,6 @@ function! SynGroup()
 	let l:s = synID(line('.'), col('.'), 1)
 	echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfunction
-
-if version >= 703
-	set undodir=~/.vim/backup
-	set undofile
-	set undoreload=10000
-endif
 
 if (has('termguicolors'))
 	set termguicolors
