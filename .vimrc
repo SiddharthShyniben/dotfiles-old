@@ -262,7 +262,6 @@ Plug 'tpope/vim-markdown'
 Plug 'metakirby5/codi.vim', { 'on': 'Codi' }
 
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'glepnir/dashboard-nvim'
 Plug 'akinsho/toggleterm.nvim'
 
 Plug 'dense-analysis/ale'
@@ -277,6 +276,9 @@ Plug 'diepm/vim-rest-console'
 
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/trouble.nvim'
+
+Plug 'andweeb/presence.nvim'
+
 
 call plug#end()
 " }}}
@@ -348,6 +350,8 @@ lua << EOF
 	  mode = "quickfix"
   }
 EOF
+
+let g:spotify_token = 'NmQwNjc5ZGJkYjE2NDViY2FmZWI3MDBkOWMxODg1N2E6MTA2MWYzNzIxZGJlNGIzNjgwMjQ1ZjYzOTY3ODkxY2E='
 "}}}
 
 " ===>>==================<<=== "
@@ -364,4 +368,19 @@ if (has('termguicolors'))
 endif
 
 match Error /\s\+$/
+
+" Times the number of times a particular command takes to execute the specified number of times (in seconds).
+function! HowLong( command, numberOfTimes )
+  " We don't want to be prompted by a message if the command being tried is
+  " an echo as that would slow things down while waiting for user input.
+  let more = &more
+  set nomore
+  let startTime = localtime()
+  for i in range( a:numberOfTimes )
+    execute a:command
+  endfor
+  let result = localtime() - startTime
+  let &more = more
+  return result
+endfunction
 " }}}
